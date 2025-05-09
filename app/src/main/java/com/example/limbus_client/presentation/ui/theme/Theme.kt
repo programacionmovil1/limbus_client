@@ -1,5 +1,6 @@
-package com.example.limbus_client.ui.theme
+package com.example.limbus_client2.ui.theme
 
+import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

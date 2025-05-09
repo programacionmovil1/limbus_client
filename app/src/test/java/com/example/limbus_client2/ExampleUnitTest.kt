@@ -1,4 +1,4 @@
-package com.example.limbus_client
+package com.example.limbus_client2
 
 import org.junit.Test
 
