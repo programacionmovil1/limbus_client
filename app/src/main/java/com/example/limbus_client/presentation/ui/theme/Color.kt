@@ -1,4 +1,4 @@
-package com.example.limbus_client2.ui.theme
+package com.example.limbus_client.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
