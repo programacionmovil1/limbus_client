@@ -1,4 +1,4 @@
-package com.example.limbus_client2
+package com.example.limbus_client
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
