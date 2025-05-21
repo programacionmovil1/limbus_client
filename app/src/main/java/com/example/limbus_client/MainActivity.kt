@@ -13,11 +13,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.limbus_client.presentation.ui.feature.auth.Formulario_1
 import com.example.limbus_client.presentation.ui.feature.auth.Formulario_2
+import com.example.limbus_client.presentation.ui.feature.auth.Formulario_3
+import com.example.limbus_client.presentation.ui.feature.auth.Formulario_4
+import com.example.limbus_client.presentation.ui.feature.auth.Formulario_5
 import com.example.limbus_client.presentation.ui.feature.auth.LoginScreen
 import com.example.limbus_client.presentation.ui.feature.auth.Presentacion_1
 import com.example.limbus_client.presentation.ui.feature.auth.Presentacion_2
 import com.example.limbus_client.presentation.ui.feature.auth.Presentacion_3
 import com.example.limbus_client.presentation.ui.feature.auth.Presentacion_4
+import com.example.limbus_client.presentation.ui.feature.auth.RegistrationCompletedScreen
 import com.example.limbus_client.presentation.ui.feature.auth.WelcomeScreen
 import com.example.limbus_client2.ui.theme.Limbus_client2Theme
 
@@ -145,9 +149,9 @@ class MainActivity : ComponentActivity() {
                         "formulario2" -> {
                             Formulario_2(
                                 onContinueClicked = {
-                                    // Al completar el formulario 2, vamos a la pantalla principal
-                                    currentScreenState.value = "main"
-                                    println("Formulario completado, navegando a pantalla principal")
+                                    // Al completar el formulario 2, vamos al formulario 3
+                                    currentScreenState.value = "formulario3"
+                                    println("Navegando a formulario 3")
                                 },
                                 onBackClicked = {
                                     // Volver al formulario 1
@@ -158,6 +162,69 @@ class MainActivity : ComponentActivity() {
                                     // Si ya tiene cuenta, volver a login
                                     currentScreenState.value = "login"
                                     println("Redirigiendo a login")
+                                }
+                            )
+                        }
+                        "formulario3" -> {
+                            Formulario_3(
+                                onFinishClicked = {
+                                    // Al completar el formulario 3, vamos al formulario 4
+                                    currentScreenState.value = "formulario4"
+                                    println("Navegando a formulario 4")
+                                },
+                                onBackClicked = {
+                                    // Volver al formulario 2
+                                    currentScreenState.value = "formulario2"
+                                    println("Volviendo al formulario 2")
+                                },
+                                onLoginClicked = {
+                                    // Si ya tiene cuenta, volver a login
+                                    currentScreenState.value = "login"
+                                    println("Redirigiendo a login")
+                                }
+                            )
+                        }
+                        "formulario4" -> {
+                            Formulario_4(
+                                onFinishClicked = {
+                                    // Modificado: Al completar el formulario 4, vamos al formulario 5
+                                    currentScreenState.value = "formulario5"
+                                    println("Navegando a formulario 5")
+                                },
+                                onBackClicked = {
+                                    // Volver al formulario 3
+                                    currentScreenState.value = "formulario3"
+                                    println("Volviendo al formulario 3")
+                                },
+                                onLoginClicked = {
+                                    // Si ya tiene cuenta, volver a login
+                                    currentScreenState.value = "login"
+                                    println("Redirigiendo a login")
+                                }
+                            )
+                        }
+                        "formulario5" -> {
+                            // Formulario 5 para preferencias de la aplicación
+                            Formulario_5(
+                                onCompleteRegistrationClicked = {
+                                    // MODIFICADO: Al completar el formulario 5, vamos a la pantalla de registro completado
+                                    currentScreenState.value = "registration_completed"
+                                    println("Registro completado, navegando a pantalla de confirmación")
+                                },
+                                onBackClicked = {
+                                    // Volver al formulario 4
+                                    currentScreenState.value = "formulario4"
+                                    println("Volviendo al formulario 4")
+                                }
+                            )
+                        }
+                        "registration_completed" -> {
+                            // NUEVO: Pantalla de registro completado
+                            RegistrationCompletedScreen(
+                                onContinueClicked = {
+                                    // Al hacer clic en continuar, vamos a la pantalla principal
+                                    currentScreenState.value = "main"
+                                    println("Navegando a pantalla principal")
                                 }
                             )
                         }
