@@ -1,3 +1,6 @@
+// ========================================
+// 3. MainActivity.kt - Navegación actualizada
+// ========================================
 package com.example.limbus_client2
 
 import android.os.Bundle
@@ -11,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.limbus_client.presentation.ui.feature.auth.Formulario_1
 import com.example.limbus_client.presentation.ui.feature.auth.Formulario_2
 import com.example.limbus_client.presentation.ui.feature.auth.Formulario_3
@@ -23,6 +27,9 @@ import com.example.limbus_client.presentation.ui.feature.auth.Presentacion_3
 import com.example.limbus_client.presentation.ui.feature.auth.Presentacion_4
 import com.example.limbus_client.presentation.ui.feature.auth.RegistrationCompletedScreen
 import com.example.limbus_client.presentation.ui.feature.auth.WelcomeScreen
+import com.example.limbus_client.presentation.ui.feature.dashboard.AddFoodScreen
+import com.example.limbus_client.presentation.ui.feature.dashboard.FoodDiaryScreen
+import com.example.limbus_client.presentation.viewmodel.LoginViewModel
 import com.example.limbus_client2.ui.theme.Limbus_client2Theme
 
 class MainActivity : ComponentActivity() {
@@ -38,6 +45,9 @@ class MainActivity : ComponentActivity() {
                     // Usar un state hoisting para controlar la navegación
                     val currentScreenState = remember { mutableStateOf("welcome") }
 
+                    // Para pasar datos entre pantallas
+                    val selectedMealType = remember { mutableStateOf("Desayuno") }
+
                     when (currentScreenState.value) {
                         "welcome" -> {
                             WelcomeScreen(
@@ -46,7 +56,6 @@ class MainActivity : ComponentActivity() {
                                     println("Navegando a presentacion1")
                                 },
                                 onLoginClicked = {
-                                    // Si el usuario ya tiene cuenta, ir a la pantalla de login
                                     currentScreenState.value = "login"
                                     println("Navegando a login")
                                 }
@@ -55,12 +64,10 @@ class MainActivity : ComponentActivity() {
                         "presentacion1" -> {
                             Presentacion_1(
                                 onStartClicked = {
-                                    // Navegar a la segunda pantalla de presentación
                                     currentScreenState.value = "presentacion2"
                                     println("Navegando a presentacion2")
                                 },
                                 onLoginClicked = {
-                                    // Si el usuario hace clic en Saltar, ir directamente a la pantalla principal
                                     currentScreenState.value = "main"
                                     println("Saltar a pantalla principal")
                                 }
@@ -69,12 +76,10 @@ class MainActivity : ComponentActivity() {
                         "presentacion2" -> {
                             Presentacion_2(
                                 onNextClicked = {
-                                    // Navegar a la tercera pantalla de presentación
                                     currentScreenState.value = "presentacion3"
                                     println("Navegando a presentacion3")
                                 },
                                 onSkipClicked = {
-                                    // Si el usuario hace clic en Saltar, ir directamente a la pantalla principal
                                     currentScreenState.value = "main"
                                     println("Saltar a pantalla principal")
                                 }
@@ -83,12 +88,10 @@ class MainActivity : ComponentActivity() {
                         "presentacion3" -> {
                             Presentacion_3(
                                 onFinishClicked = {
-                                    // Navegar a la cuarta pantalla de presentación
                                     currentScreenState.value = "presentacion4"
                                     println("Navegando a presentacion4")
                                 },
                                 onSkipClicked = {
-                                    // Si el usuario hace clic en Saltar, ir directamente a la pantalla principal
                                     currentScreenState.value = "main"
                                     println("Saltar a pantalla principal")
                                 }
@@ -97,50 +100,50 @@ class MainActivity : ComponentActivity() {
                         "presentacion4" -> {
                             Presentacion_4(
                                 onFinishClicked = {
-                                    // Al terminar el onboarding, ir a la pantalla de registro/login
                                     currentScreenState.value = "login"
                                     println("Navegando a login")
                                 },
                                 onSkipClicked = {
-                                    // Si el usuario hace clic en Saltar, ir directamente a la pantalla principal
                                     currentScreenState.value = "main"
                                     println("Saltar a pantalla principal")
                                 }
                             )
                         }
                         "login" -> {
+                            // Crear una instancia del ViewModel para la pantalla de login
+                            val loginViewModel: LoginViewModel = viewModel()
+
                             LoginScreen(
-                                onLoginClicked = {
-                                    // Ahora el login nos lleva al formulario de registro
+                                viewModel = loginViewModel,
+                                onLoginSuccess = {
+                                    // Cuando el login es exitoso, ir al formulario de registro
+                                    currentScreenState.value = "formulario1"
+                                    println("Login exitoso, navegando a formulario de registro")
+                                },
+                                onNavigateToRegister = {
+                                    // El botón de registro lleva al formulario
                                     currentScreenState.value = "formulario1"
                                     println("Navegando a formulario de registro")
                                 },
-                                onRegisterClicked = {
-                                    // El botón de registro también lleva al formulario
+                                onGoogleLoginClicked = { googleToken ->
+                                    // Manejar login con Google
+                                    println("Login con Google iniciado con token: $googleToken")
+                                    // Por ahora, ir al formulario como si fuera login exitoso
                                     currentScreenState.value = "formulario1"
-                                    println("Navegando a formulario de registro")
-                                },
-                                onForgotPasswordClicked = {
-                                    // Navegar a la pantalla de recuperación de contraseña
-                                    currentScreenState.value = "forgot_password"
-                                    println("Navegando a recuperación de contraseña")
                                 }
                             )
                         }
                         "formulario1" -> {
                             Formulario_1(
                                 onContinueClicked = {
-                                    // Ahora al completar el formulario 1, vamos al formulario 2
                                     currentScreenState.value = "formulario2"
                                     println("Navegando a formulario 2")
                                 },
                                 onBackClicked = {
-                                    // Volver a la pantalla anterior
                                     currentScreenState.value = "login"
                                     println("Volviendo a la pantalla de login")
                                 },
                                 onLoginClicked = {
-                                    // Si ya tiene cuenta, volver a login
                                     currentScreenState.value = "login"
                                     println("Redirigiendo a login")
                                 }
@@ -149,17 +152,14 @@ class MainActivity : ComponentActivity() {
                         "formulario2" -> {
                             Formulario_2(
                                 onContinueClicked = {
-                                    // Al completar el formulario 2, vamos al formulario 3
                                     currentScreenState.value = "formulario3"
                                     println("Navegando a formulario 3")
                                 },
                                 onBackClicked = {
-                                    // Volver al formulario 1
                                     currentScreenState.value = "formulario1"
                                     println("Volviendo al formulario 1")
                                 },
                                 onLoginClicked = {
-                                    // Si ya tiene cuenta, volver a login
                                     currentScreenState.value = "login"
                                     println("Redirigiendo a login")
                                 }
@@ -168,17 +168,14 @@ class MainActivity : ComponentActivity() {
                         "formulario3" -> {
                             Formulario_3(
                                 onFinishClicked = {
-                                    // Al completar el formulario 3, vamos al formulario 4
                                     currentScreenState.value = "formulario4"
                                     println("Navegando a formulario 4")
                                 },
                                 onBackClicked = {
-                                    // Volver al formulario 2
                                     currentScreenState.value = "formulario2"
                                     println("Volviendo al formulario 2")
                                 },
                                 onLoginClicked = {
-                                    // Si ya tiene cuenta, volver a login
                                     currentScreenState.value = "login"
                                     println("Redirigiendo a login")
                                 }
@@ -187,66 +184,86 @@ class MainActivity : ComponentActivity() {
                         "formulario4" -> {
                             Formulario_4(
                                 onFinishClicked = {
-                                    // Modificado: Al completar el formulario 4, vamos al formulario 5
                                     currentScreenState.value = "formulario5"
                                     println("Navegando a formulario 5")
                                 },
                                 onBackClicked = {
-                                    // Volver al formulario 3
                                     currentScreenState.value = "formulario3"
                                     println("Volviendo al formulario 3")
                                 },
                                 onLoginClicked = {
-                                    // Si ya tiene cuenta, volver a login
                                     currentScreenState.value = "login"
                                     println("Redirigiendo a login")
                                 }
                             )
                         }
                         "formulario5" -> {
-                            // Formulario 5 para preferencias de la aplicación
                             Formulario_5(
                                 onCompleteRegistrationClicked = {
-                                    // MODIFICADO: Al completar el formulario 5, vamos a la pantalla de registro completado
                                     currentScreenState.value = "registration_completed"
                                     println("Registro completado, navegando a pantalla de confirmación")
                                 },
                                 onBackClicked = {
-                                    // Volver al formulario 4
                                     currentScreenState.value = "formulario4"
                                     println("Volviendo al formulario 4")
                                 }
                             )
                         }
                         "registration_completed" -> {
-                            // NUEVO: Pantalla de registro completado
                             RegistrationCompletedScreen(
                                 onContinueClicked = {
-                                    // Al hacer clic en continuar, vamos a la pantalla principal
+                                    currentScreenState.value = "food_diary"
+                                    println("Navegando a pantalla de diario de comidas")
+                                }
+                            )
+                        }
+                        "food_diary" -> {
+                            FoodDiaryScreen(
+                                onBackToMainClicked = {
                                     currentScreenState.value = "main"
-                                    println("Navegando a pantalla principal")
+                                    println("Volviendo a la pantalla principal")
+                                },
+                                onProfileClicked = {
+                                    currentScreenState.value = "profile"
+                                    println("Navegando al perfil del usuario")
+                                },
+                                onAddFoodClicked = {
+                                    selectedMealType.value = "Desayuno"
+                                    currentScreenState.value = "add_food"
+                                    println("Navegando a añadir alimentos")
                                 }
                             )
                         }
                         "register" -> {
-                            // Esta ruta ya no se usaría, pero la dejamos por compatibilidad
-                            // Redirigimos a nuestro nuevo formulario
+                            // Compatibilidad: redirigir al formulario
                             currentScreenState.value = "formulario1"
                         }
                         "forgot_password" -> {
-                            // Aquí iría tu pantalla de recuperación de contraseña
-                            // Por ahora, mostramos algo simple
                             Text(
-                                text = "Recuperación de Contraseña",
+                                text = "Recuperación de Contraseña - Funcionalidad en desarrollo",
                                 style = MaterialTheme.typography.headlineLarge,
                                 modifier = Modifier.fillMaxSize()
                             )
                         }
                         "main" -> {
-                            // Aquí iría tu pantalla principal de la aplicación
-                            // Por ahora, mostramos algo simple para demostrar que llegamos a esta pantalla
+                            // Redirigir al diario de comidas
+                            currentScreenState.value = "food_diary"
+                        }
+                        "add_food" -> {
+                            AddFoodScreen(
+                                onBackClicked = {
+                                    currentScreenState.value = "food_diary"
+                                    println("Volviendo al diario de comidas")
+                                },
+                                onFoodSelected = { foodType ->
+                                    println("Seleccionado tipo de comida: $foodType")
+                                    currentScreenState.value = "food_diary"
+                                }
+                            )
+                        }
+                        "profile" -> {
                             Text(
-                                text = "Pantalla Principal",
+                                text = "Perfil de Usuario - Funcionalidad en desarrollo",
                                 style = MaterialTheme.typography.headlineLarge,
                                 modifier = Modifier.fillMaxSize()
                             )

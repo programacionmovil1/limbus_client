@@ -7,21 +7,24 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -40,19 +43,17 @@ fun Presentacion_4(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.TopCenter // 👈 Alineado arriba como los demás
     ) {
-        // Main Card
+        // Tarjeta principal
         Card(
             modifier = Modifier
-                .fillMaxWidth(0.9f),
+                .fillMaxWidth(0.95f)
+                .fillMaxHeight(0.95f)
+                .padding(top = 48.dp), // 👈 Se sube la tarjeta visualmente
             shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.White
-            ),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 4.dp
-            )
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -62,7 +63,7 @@ fun Presentacion_4(
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Imagen del seguimiento personalizado
+                // Imagen ilustrativa
                 Image(
                     painter = painterResource(id = R.drawable.imgen4),
                     contentDescription = "Funcionalidades adicionales",
@@ -72,40 +73,46 @@ fun Presentacion_4(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Indicadores de progreso - 4 barras
+                // ⬇ Puntitos de progreso (último activo)
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(0.8f)
+                        .fillMaxWidth()
                         .padding(vertical = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    LinearProgressIndicator(
-                        progress = 1f,
+                    // Punto 1
+                    Box(
                         modifier = Modifier
-                            .weight(1f)
-                            .height(4.dp),
-                        color = Color(0xFF3F51B5) // Azul para completado
+                            .size(12.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFF3F51B5))
                     )
-                    LinearProgressIndicator(
-                        progress = 1f,
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    // Punto 2
+                    Box(
                         modifier = Modifier
-                            .weight(1f)
-                            .height(4.dp),
-                        color = Color(0xFF3F51B5) // Azul para completado
+                            .size(12.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFF3F51B5))
                     )
-                    LinearProgressIndicator(
-                        progress = 1f,
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    // Punto 3
+                    Box(
                         modifier = Modifier
-                            .weight(1f)
-                            .height(4.dp),
-                        color = Color(0xFF3F51B5) // Azul para completado
+                            .size(12.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFF3F51B5))
                     )
-                    LinearProgressIndicator(
-                        progress = 1f,
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    // Punto 4 (actual)
+                    Box(
                         modifier = Modifier
-                            .weight(1f)
-                            .height(4.dp),
-                        color = Color(0xFF3F51B5) // Azul para actual
+                            .size(12.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFF3F51B5))
                     )
                 }
 
@@ -121,7 +128,7 @@ fun Presentacion_4(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Texto descriptivo
+                // Descripción
                 Text(
                     text = "Estás listo para comenzar tu camino hacia una mejor salud. Personaliza tu experiencia y disfruta de todas las funciones que Limbus tiene para ti.",
                     fontSize = 16.sp,
@@ -131,7 +138,7 @@ fun Presentacion_4(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // Botones
+                // Botones inferiores
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -154,7 +161,7 @@ fun Presentacion_4(
                     Button(
                         onClick = onFinishClicked,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF3F51B5) // Botón azul
+                            containerColor = Color(0xFF3F51B5)
                         ),
                         modifier = Modifier.width(120.dp),
                         shape = RoundedCornerShape(8.dp)

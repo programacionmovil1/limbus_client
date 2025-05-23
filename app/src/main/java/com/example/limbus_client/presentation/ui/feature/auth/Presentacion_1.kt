@@ -7,21 +7,24 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -40,19 +43,16 @@ fun Presentacion_1(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.TopCenter
     ) {
-        // Main Card
         Card(
             modifier = Modifier
-                .fillMaxWidth(0.9f),
+                .fillMaxWidth(0.95f)
+                .fillMaxHeight(0.95f)
+                .padding(top = 48.dp),
             shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.White
-            ),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 4.dp
-            )
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -60,11 +60,8 @@ fun Presentacion_1(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                // Removed the status indicator/timestamp that was here
-
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Pink background with image
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -87,39 +84,37 @@ fun Presentacion_1(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Progress indicators - 3 bars
+                // Puntitos de progreso
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(0.8f)
+                        .fillMaxWidth()
                         .padding(vertical = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    LinearProgressIndicator(
-                        progress = 1f,
+                    // Punto activo (azul)
+                    Box(
                         modifier = Modifier
-                            .weight(1f)
-                            .height(4.dp),
-                        color = Color(0xFF3F51B5) // Blue indicator for completed
+                            .size(12.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFF3F51B5)) // azul
                     )
-                    LinearProgressIndicator(
-                        progress = 0f,
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(4.dp),
-                        color = Color.LightGray // Gray for upcoming
-                    )
-                    LinearProgressIndicator(
-                        progress = 0f,
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(4.dp),
-                        color = Color.LightGray // Gray for upcoming
-                    )
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    // Punto inactivo (gris claro)
+                    repeat(3) {
+                        Box(
+                            modifier = Modifier
+                                .size(12.dp)
+                                .clip(CircleShape)
+                                .background(Color.LightGray)
+                        )
+                        if (it != 2) Spacer(modifier = Modifier.width(12.dp))
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Title text
                 Text(
                     text = "¡Bienvenido/a a Limbus!",
                     fontSize = 24.sp,
@@ -129,7 +124,6 @@ fun Presentacion_1(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Description text
                 Text(
                     text = "Tu compañero inteligente para una nutrición cardiovascular y un estilo de vida más sano.",
                     fontSize = 16.sp,
@@ -139,7 +133,6 @@ fun Presentacion_1(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // Buttons
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -162,7 +155,7 @@ fun Presentacion_1(
                     Button(
                         onClick = onStartClicked,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF3F51B5) // Blue button
+                            containerColor = Color(0xFF3F51B5)
                         ),
                         modifier = Modifier.width(120.dp),
                         shape = RoundedCornerShape(8.dp)
